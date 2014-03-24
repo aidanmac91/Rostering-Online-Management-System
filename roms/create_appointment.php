@@ -20,13 +20,19 @@ switch($trigger)
             $database   = $connection->selectDB('staff');
             $collection = $database->selectCollection('appointments');
  
-            $task               = array();
-            $task['title']      = $_POST['title'];
-            $task['status']     = $_POST['status'];
-            $task['context']    = $_POST['context'];
-            $task['saved_date']   = new MongoDate();
+            $appointment               = array();
+            //$task['title']      = $_POST['title'];
+            //$task['status']     = $_POST['status'];
+            //$task['context']    = $_POST['context'];
+            $appointment['clientName'] =$_POST['clientName'];
+            $appointment['appointmentDate']=$_POST['appointmentDate'];
+            $appointment['location']=$_POST['location'];
+            $appointment['attended']=false;
+            $appointment['time']=$_POST['time'];
+            $appointment['otherInfo']=$_POST['otherInfo'];
+            $appointment['saved_date']   = new MongoDate();
  
-            $collection->insert($task);       
+            $collection->insert($appointment);       
         } 
         catch(MongoConnectionException $e) 
         {
@@ -49,25 +55,23 @@ switch($trigger)
 <!DOCTYPE html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-    <title>Add a task</title>
+    <title>Add a appointment</title>
     <link type="text/css" rel="stylesheet" href="" />
     <!--[if lt IE 9]>
         <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
 </head>
 <body>
-    <h1>Task Creator</h1>
+    <h1>Appointment Creater</h1>
     <?php if ($trigger === 'show_form'): ?>
     <form action="<?php echo $_SERVER['PHP_SELF'];?>" method="post">
-        <p>
-     <label for="clientName">clientName<br /></label>
-  <select id="myList" name="clientName" onchange="show()">
-    <option>John Smith    </option>
-    <option>Joe Bloggs    </option>
-    <option>Jane Murphy    </option>
+         <label for="clientName">Client Name<br /></label>
+         <select id="myList" name="clientName" onchange="show()">
+        <option>John Smith    </option>
+        <option>Joe Bloggs    </option>
+       <option>Jane Murphy    </option>
   </select>
-</p>
-<p>
+  <p>
   <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css"/>
   <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
   <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
@@ -84,6 +88,7 @@ switch($trigger)
     <input id="datepicker" name="appointmentDate"/>
   </p>
 </body>
+</p>
 <p>
   <label for="location">Where<br /> </label>
   <input id="location" name="location"/>
@@ -94,16 +99,15 @@ switch($trigger)
 </p>
 <p>
   <label for="otherInfo">Other Information <br /></label>
-  <input id="otherInfo" name="otherInfo"/>
+  <textarea id="otherInfo" name="otherInfo"/>
+</textarea>
 </p>
-<p>
-  <input type="submit" value="Create"/>
-</p>
+        <p><input type="submit" name="submit" value="Save"/></p>
     </form>
     <?php else: ?>
     <p>
-        Task saved. _id: <?php echo $task['_id'];?>.
-        <a href="<?php echo $_SERVER['PHP_SELF'];?>">Add another task?</a>
+        Appointment saved. _id: <?php echo $task['_id'];?>.
+        <a href="<?php echo $_SERVER['PHP_SELF'];?>">Add another appointment?</a>
     </p>
 <?php endif;?>
     </body>

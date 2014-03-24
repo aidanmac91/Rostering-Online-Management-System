@@ -20,13 +20,18 @@ switch($trigger)
             $database   = $connection->selectDB('staff');
             $collection = $database->selectCollection('clients');
  
-            $task               = array();
-            $task['title']      = $_POST['title'];
-            $task['status']     = $_POST['status'];
-            $task['context']    = $_POST['context'];
-            $task['saved_date']   = new MongoDate();
+            $client               = array();
+            //$task['title']      = $_POST['title'];
+            //$task['status']     = $_POST['status'];
+            //$task['context']    = $_POST['context'];
+            $client['clientName'] =$_POST['clientName'];
+            $client['nextOfKinName']=$_POST['nextOfKinName'];
+            $client['accommodation']=$_POST['accommodation'];
+            $client['nextOfKinNumber']=$_POST['nextOfKinNumber'];
+            $client['otherInfo']=$_POST['otherInfo'];
+            $client['saved_date']   = new MongoDate();
  
-            $collection->insert($task);       
+            $collection->insert($client);       
         } 
         catch(MongoConnectionException $e) 
         {
@@ -49,20 +54,20 @@ switch($trigger)
 <!DOCTYPE html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-    <title>Add a task</title>
+    <title>Add a client</title>
     <link type="text/css" rel="stylesheet" href="" />
     <!--[if lt IE 9]>
         <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
 </head>
 <body>
-    <h1>Task Creator</h1>
+    <h1>Client Creater</h1>
     <?php if ($trigger === 'show_form'): ?>
     <form action="<?php echo $_SERVER['PHP_SELF'];?>" method="post">
-        <p>
-    <label for="clientName">Client Name <br /></label>
-    <input id="clientName" name="clientName"/>
-  </p>
+         <label for="clientName">Client Name<br /></label>
+        <input id="clientName" name="clientName"/>
+  
+
   <p>
     <label for="accommodation">Accommodation<br /></label>
     <select id="myList" name="accommodation" onchange="show()">
@@ -81,16 +86,16 @@ switch($trigger)
     <label for="nextOfKinNumber">Next Of Kin Number <br /></label>
     <input id="nextOfKinNumber" name="nextOfKinNumber"/>
   </p>
-  <p>
-    <input type="submit" value="Create"/>
-  </p>
-</form>
 </p>
+<label for="otherInfo">Other Information <br /></label>
+  <textarea id="otherInfo" name="otherInfo"/>
+</textarea>
+        <p><input type="submit" name="submit" value="Save"/></p>
     </form>
     <?php else: ?>
     <p>
-        Task saved. _id: <?php echo $task['_id'];?>.
-        <a href="<?php echo $_SERVER['PHP_SELF'];?>">Add another task?</a>
+        Client saved. _id: <?php echo $task['_id'];?>.
+        <a href="<?php echo $_SERVER['PHP_SELF'];?>">Add another client?</a>
     </p>
 <?php endif;?>
     </body>

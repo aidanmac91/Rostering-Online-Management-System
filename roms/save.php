@@ -18,7 +18,7 @@ switch($trigger)
         {
             $connection = new Mongo('mongodb://root:root@ds057538.mongolab.com:57538/staff');
             $database   = $connection->selectDB('staff');
-            $collection = $database->selectCollection('testing');
+            $collection = $database->selectCollection('appointments');
  
             $task               = array();
             $task['title']      = $_POST['title'];
