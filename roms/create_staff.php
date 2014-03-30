@@ -20,13 +20,17 @@ switch($trigger)
             $database   = $connection->selectDB('staff');
             $collection = $database->selectCollection('users');
  
-            $task               = array();
-            $task['title']      = $_POST['title'];
-            $task['status']     = $_POST['status'];
-            $task['context']    = $_POST['context'];
-            $task['saved_date']   = new MongoDate();
+            $user               = array();
+            $user['username']      = $_POST['username'];
+            $user['name']     = $_POST['name'];
+            $user['email']    = $_POST['email'];
+             $user['password']    = $_POST['password'];
+            $user['staffType']    = $_POST['staffType'];
+            $user['hoursPerWeek']    = $_POST['hour'];
+
+            $user['saved_date']   = new MongoDate();
  
-            $collection->insert($task);       
+            $collection->insert($user);       
         } 
         catch(MongoConnectionException $e) 
         {
@@ -49,14 +53,14 @@ switch($trigger)
 <!DOCTYPE html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-    <title>Add a task</title>
+    <title>Add a staff member</title>
     <link type="text/css" rel="stylesheet" href="" />
     <!--[if lt IE 9]>
         <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
 </head>
 <body>
-    <h1>Task Creator</h1>
+    <h1>User Creator</h1>
     <?php if ($trigger === 'show_form'): ?>
     <form action="<?php echo $_SERVER['PHP_SELF'];?>" method="post">
     <label for="username">Username<br /></label>
@@ -82,21 +86,18 @@ switch($trigger)
       <option>Administrator</option>
     </select>
   </p>
-  <p>
-    <label for="hoursPerWeek">Hours Per Week<br /></label>
-    <select id="myList" name="hoursPerWeek" onchange="show()">
-      <option>Care Staff</option>
-      <option>Nursing Staff</option>
-      <option>Administrator</option>
-    </select>
-  </p>
-  <p>
-    <input type="submit" value="Create"/>
+   <label for="hour">Hours per week<br /></label>
+ <select name="hour">
+    <?php for ($i = 1; $i <= 42; $i++) : ?>
+        <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
+    <?php endfor; ?>
+</select>
+     <p><input type="submit" name="submit" value="Save"/></p>
     </form>
     <?php else: ?>
     <p>
-        Task saved. _id: <?php echo $task['_id'];?>.
-        <a href="<?php echo $_SERVER['PHP_SELF'];?>">Add another task?</a>
+        Staff Member saved. _id: <?php echo $user['_id'];?>.
+        <a href="<?php echo $_SERVER['PHP_SELF'];?>">Add another staff member?</a>
     </p>
 <?php endif;?>
     </body>
