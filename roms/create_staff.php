@@ -59,7 +59,7 @@ switch($trigger)
         <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
 </head>
-<body>
+<body><?php include 'common.php';?>
     <h1>User Creator</h1>
     <?php if ($trigger === 'show_form'): ?>
     <form action="<?php echo $_SERVER['PHP_SELF'];?>" method="post">

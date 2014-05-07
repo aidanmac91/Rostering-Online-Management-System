@@ -51,6 +51,22 @@ switch($trigger)
 }
 ?>
 
+<?php
+try
+{
+    $connection = new Mongo('mongodb://root:root@ds057538.mongolab.com:57538/staff');
+    $database   = $connection->selectDB('staff');
+    $collection = $database->selectCollection('accommodations');
+}
+catch(MongoConnectionException $e)
+{
+    die("Failed to connect to database ".$e->getMessage());
+}
+ 
+$cursor = $collection->find();
+
+?>
+
 <!DOCTYPE html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
@@ -61,6 +77,14 @@ switch($trigger)
     <![endif]-->
 </head>
 <body>
+    <?php include 'common.php';?>
+     <?php
+        $accommodationArray=array();
+            while ($cursor->hasNext()):
+             $accomodation = $cursor->getNext(); 
+                array_push($accommodationArray, $accomodation['accomodationName']);
+        ?>
+        <?php endwhile;?>
     <h1>Client Creater</h1>
     <?php if ($trigger === 'show_form'): ?>
     <form action="<?php echo $_SERVER['PHP_SELF'];?>" method="post">
@@ -71,11 +95,12 @@ switch($trigger)
   <p>
     <label for="accommodation">Accommodation<br /></label>
     <select id="myList" name="accommodation" onchange="show()">
-      <option>House 1</option>
-      <option>House 2</option>
-      <option>House 3</option>
-      <option>House 4</option>
-      <option>House 5</option>
+     <?php
+
+            foreach ($accommodationArray as $value) {
+            echo'<option value="'.$value.'">'.$value.'</option>'; 
+            }
+            ?>
     </select>
   </p>
   <p>

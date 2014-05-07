@@ -26,11 +26,12 @@ $cursor = $collection->find();
  
 </head>
 <body>
+    <?php include 'common.php';?>
 <h1>Clients</h1>
  
 <?php while ($cursor->hasNext()):
     $client = $cursor->getNext(); ?>
-    <h2><?= $task['title'] ?></h2>
+    <h2><?= $client['clientName'] ?></h2>
     <strong>Client Name:</strong> <?= $client['clientName']?> <br />
     <strong>Location:</strong> <?= $client['accommodation']?><br />
     <strong>Next Of Kin Name:</strong> <?= $client['nextOfKinName']?><br />

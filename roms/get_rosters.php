@@ -26,11 +26,12 @@ $cursor = $collection->find();
  
 </head>
 <body>
+    <?php include 'common.php';?>
 <h1>Rosters</h1>
  
 <?php while ($cursor->hasNext()):
     $roster = $cursor->getNext(); ?>
-    <h2><?= $task['title'] ?></h2>
+    <h2><?= $roster['weekDay'] ?></h2>
     <strong>Week Day:</strong> <?= $roster['weekDay']?> <br />
     <strong>Location:</strong> <?= $roster['location']?><br />
     <strong>Timeslot:</strong> <?= $roster['timeslot']?><br />

@@ -14,10 +14,19 @@ $cursor = $collection->find();
 
 ?>
 
+<?php
+
+session_start();
+
+$_SESSION['appointmentID'] = $appointmentID;
+
+?>
+
+
 <!DOCTYPE html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-    <title>Roster Viewer</title>
+    <title>Appointment Viewer</title>
  
     <link type="text/css" rel="stylesheet" href="" />
     <!--[if lt IE 9]>
@@ -27,20 +36,34 @@ $cursor = $collection->find();
 </head>
 <body>
     <?php include 'common.php';?>
-<h1>Rosters</h1>
+<h1>Appointment</h1>
  
-<?php while ($cursor->hasNext()):
-    $appointment = $cursor->getNext(); 
-    $t=$appointment['attended']?>
-    <h2><?= $appointment['clientName'] ?></h2>
-    <strong>Week Day:</strong> <?= $appointment['appointmentDate']?> <br />
-    <strong>Location:</strong> <?= $appointment['location']?><br />
-    <strong>attended:</strong> <?= $appointment['attended']?><br />
-    <strong>time:</strong> <?= $appointment['time']?><br />
-    <strong>Other Info:</strong> <?= $appointment['otherInfo']?><br />
+<?php
+$appointArray=array();
+ while ($cursor->hasNext()):
     
-     <input type="checkbox" name="newsletter[]" value="newsletter" checked=<?$t?>>i want to sign up   for newsletter<br>
+
+    $appoint = $cursor->getNext(); 
+    array_push($appointArray, $appoint['name']);
+?>
 <?php endwhile;?>
+
+
+<form method="get" action="edit_appointment.php">
+      <label for="appointmentID">Accommodation</label>
+         <select id="appointmentID" name="appointmentID" onchange="show()">
+            <?php
+
+            foreach ($appointArray as $value) {
+            echo'<option value="'.$value.'">'.$value.'</option>'; 
+            }
+            ?>
+        </select>
+    <input type="submit">
+  </form>
+
+
+
 
 </body>
 </html>

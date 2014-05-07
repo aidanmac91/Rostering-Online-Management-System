@@ -57,6 +57,7 @@ switch($trigger)
     <![endif]-->
 </head>
 <body>
+    <?php include 'common.php';?>
     <h1>accommodation Creater</h1>
     <?php if ($trigger === 'show_form'): ?>
     <form action="<?php echo $_SERVER['PHP_SELF'];?>" method="post">

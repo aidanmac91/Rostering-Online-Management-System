@@ -18,13 +18,27 @@ $cursor = $collection->find();
 
 session_start();
 
-$_SESSION['regName'] = $regValue;
+$_SESSION['staffName'] = $staffName;
 
 ?>
 
 
 <!DOCTYPE html>
 <head>
+
+     <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="jumbotron.css" rel="stylesheet">
+
+    <!-- Just for debugging purposes. Don't actually copy this line! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
     <title>Staff Viewer</title>
  
@@ -36,6 +50,8 @@ $_SESSION['regName'] = $regValue;
 </head>
 <body>
     <?php include 'common.php';?>
+<div class="jumbotron">
+      <div class="container">
 <h1>Staff members</h1>
  
 <?php
@@ -46,16 +62,11 @@ $staffArray=array();
     $staff = $cursor->getNext(); 
     array_push($staffArray, $staff['name']);
 ?>
-    <h2><?= $staff['name'] ?></h2>
-    <strong>Username:</strong> <?= $staff['username']?> <br />
-    <strong>Email:</strong> <?= $staff['email']?><br />
-    <strong>Staff Type:</strong> <?= $staff['staffType']?><br />
-    <strong>Hours Per Week:</strong> <?= $staff['hoursPerWeek']?><br />
 <?php endwhile;?>
 
-<form method="get" action="get_reg.php">
-      <label for="regValue">Client Name123<br /></label>
-         <select id="regValue" name="regValue" onchange="show()">
+<form method="get" action="edit_staffMember.php">
+      <label for="staffName">Staff Member</label>
+         <select id="staffName" name="staffName" onchange="show()">
             <?php
 
             foreach ($staffArray as $value) {
@@ -68,6 +79,6 @@ $staffArray=array();
 
 
 
-
+</div></div>
 </body>
 </html>

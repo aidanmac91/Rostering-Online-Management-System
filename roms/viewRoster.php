@@ -3,7 +3,7 @@ try
 {
     $connection = new Mongo('mongodb://root:root@ds057538.mongolab.com:57538/staff');
     $database   = $connection->selectDB('staff');
-    $collection = $database->selectCollection('users');
+    $collection = $database->selectCollection('rosters');
 }
 catch(MongoConnectionException $e)
 {
@@ -18,7 +18,7 @@ $cursor = $collection->find();
 
 session_start();
 
-$_SESSION['regName'] = $regValue;
+$_SESSION['rosterID'] = $rosterID;
 
 ?>
 
@@ -26,7 +26,7 @@ $_SESSION['regName'] = $regValue;
 <!DOCTYPE html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-    <title>Staff Viewer</title>
+    <title>Roster Viewer</title>
  
     <link type="text/css" rel="stylesheet" href="" />
     <!--[if lt IE 9]>
@@ -36,29 +36,25 @@ $_SESSION['regName'] = $regValue;
 </head>
 <body>
     <?php include 'common.php';?>
-<h1>Staff members</h1>
+<h1>Roster</h1>
  
 <?php
-$staffArray=array();
+$rosterArray=array();
  while ($cursor->hasNext()):
     
 
-    $staff = $cursor->getNext(); 
-    array_push($staffArray, $staff['name']);
+    $roster = $cursor->getNext(); 
+    array_push($rosterArray, $roster['name']);
 ?>
-    <h2><?= $staff['name'] ?></h2>
-    <strong>Username:</strong> <?= $staff['username']?> <br />
-    <strong>Email:</strong> <?= $staff['email']?><br />
-    <strong>Staff Type:</strong> <?= $staff['staffType']?><br />
-    <strong>Hours Per Week:</strong> <?= $staff['hoursPerWeek']?><br />
 <?php endwhile;?>
 
-<form method="get" action="get_reg.php">
-      <label for="regValue">Client Name123<br /></label>
-         <select id="regValue" name="regValue" onchange="show()">
+
+<form method="get" action="edit_roster.php">
+      <label for="rosterID">Client Name</label>
+         <select id="rosterID" name="rosterID" onchange="show()">
             <?php
 
-            foreach ($staffArray as $value) {
+            foreach ($rosterArray as $value) {
             echo'<option value="'.$value.'">'.$value.'</option>'; 
             }
             ?>

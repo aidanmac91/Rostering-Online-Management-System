@@ -18,7 +18,7 @@ $cursor = $collection->find();
 
 session_start();
 
-$_SESSION['regName'] = $regValue;
+$_SESSION['staffName'] = $regValue;
 
 ?>
 
@@ -46,14 +46,8 @@ $staffArray=array();
     $staff = $cursor->getNext(); 
     array_push($staffArray, $staff['name']);
 ?>
-    <h2><?= $staff['name'] ?></h2>
-    <strong>Username:</strong> <?= $staff['username']?> <br />
-    <strong>Email:</strong> <?= $staff['email']?><br />
-    <strong>Staff Type:</strong> <?= $staff['staffType']?><br />
-    <strong>Hours Per Week:</strong> <?= $staff['hoursPerWeek']?><br />
-<?php endwhile;?>
 
-<form method="get" action="get_reg.php">
+<form method="get" action="edit_staffMember.php">
       <label for="regValue">Client Name123<br /></label>
          <select id="regValue" name="regValue" onchange="show()">
             <?php

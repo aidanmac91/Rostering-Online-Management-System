@@ -1,4 +1,38 @@
 <?php
+try
+{
+    $connection = new Mongo('mongodb://root:root@ds057538.mongolab.com:57538/staff');
+    $database   = $connection->selectDB('staff');
+    $collection = $database->selectCollection('accommodations');
+}
+catch(MongoConnectionException $e)
+{
+    die("Failed to connect to database ".$e->getMessage());
+}
+ 
+$cursor = $collection->find();
+
+?>
+
+<?php
+try
+{
+    $connection = new Mongo('mongodb://root:root@ds057538.mongolab.com:57538/staff');
+    $database   = $connection->selectDB('staff');
+    $collection = $database->selectCollection('users');
+}
+catch(MongoConnectionException $e)
+{
+    die("Failed to connect to database ".$e->getMessage());
+}
+ 
+$cursor1 = $collection->find();
+
+?>
+
+
+
+<?php
 $trigger = "";
  
 if((!empty($_POST['submit'])) && ($_POST['submit'] === 'Save')) 
@@ -49,6 +83,24 @@ switch($trigger)
 
 <!DOCTYPE html>
 <head>
+
+  <?php
+        $accommodationArray=array();
+            while ($cursor->hasNext()):
+             $accomodation = $cursor->getNext(); 
+                array_push($accommodationArray, $accomodation['accomodationName']);
+        ?>
+        <?php endwhile;?>
+
+        <?php
+$staffArray=array();
+ while ($cursor1->hasNext()):
+    
+
+    $staff = $cursor1->getNext(); 
+    array_push($staffArray, $staff['name']);
+?>
+<?php endwhile;?>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
     <title>Add a roster</title>
     <link type="text/css" rel="stylesheet" href="" />
@@ -57,6 +109,7 @@ switch($trigger)
     <![endif]-->
 </head>
 <body>
+<?php include 'common.php';?>
     <h1>roster Creator</h1>
     <?php if ($trigger === 'show_form'): ?>
     <form action="<?php echo $_SERVER['PHP_SELF'];?>" method="post">
@@ -79,11 +132,13 @@ switch($trigger)
   <p>
     <label for="location">Location<br /></label>
     <select id="myList" name="location" onchange="show()">
-      <option>House 1    </option>
-      <option>House 2    </option>
-      <option>House 3    </option>
-      <option>House 4    </option>
-      <option>House 5    </option>
+     <?php
+
+            foreach ($accommodationArray as $value) {
+            echo'<option value="'.$value.'">'.$value.'</option>'; 
+            }
+            ?>
+    </select>
     </select>
   </p>
 
@@ -99,9 +154,12 @@ switch($trigger)
   <label for="staffMember">Staff Member<br /></label>
 </p>
   <select id="myList" name="staffMember" onchange="show()">
-    <option>John Smith</option>
-    <option>Jane Murphy</option>
-    <option>Tom Byrne</option>
+   <?php
+
+            foreach ($staffArray as $value) {
+            echo'<option value="'.$value.'">'.$value.'</option>'; 
+            }
+            ?>
   </select>
   
         <p><input type="submit" name="submit" value="Save"/></p>

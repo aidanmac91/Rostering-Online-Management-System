@@ -17,7 +17,7 @@ $cursor = $collection->find();
 <!DOCTYPE html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-    <title>Accomodation Viewer</title>
+    <title>Accommodation Viewer</title>
  
     <link type="text/css" rel="stylesheet" href="" />
     <!--[if lt IE 9]>
@@ -26,14 +26,15 @@ $cursor = $collection->find();
  
 </head>
 <body>
-<h1>Accomodation</h1>
+    <?php include 'common.php';?>
+<h1>Accommodation</h1>
  
 <?php while ($cursor->hasNext()):
-    $accomodation = $cursor->getNext(); ?>
-    <h2><?= $task['title'] ?></h2>
-    <strong>Accomodation Name:</strong> <?= $accomodation['accomodationName']?> <br />
-    <strong>Number Of Clients:</strong> <?= $accomodation['numberOfClients']?><br />
-    <strong>phoneNumber:</strong> <?= $accomodation['phoneNumber']?><br />
+    $accommodation = $cursor->getNext(); ?>
+    <h2><?= $accommodation['accomodationName'] ?></h2>
+    <strong>Accommodation Name:</strong> <?= $accommodation['accomodationName']?> <br />
+    <strong>Number Of Clients:</strong> <?= $accommodation['numberOfClients']?><br />
+    <strong>phoneNumber:</strong> <?= $accommodation['phoneNumber']?><br />
 <?php endwhile;?>
 </body>
 </html>

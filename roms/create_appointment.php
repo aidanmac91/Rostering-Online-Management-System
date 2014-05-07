@@ -1,4 +1,10 @@
 <?php
+
+session_start();
+
+$_SESSION['regName'] = $regValue;
+
+
 $trigger = "";
  
 if((!empty($_POST['submit'])) && ($_POST['submit'] === 'Save')) 
@@ -22,6 +28,10 @@ switch($trigger)
  
             $appointment               = array();
             //$task['title']      = $_POST['title'];
+            $name=$_POST['clientName'];//+" "+$_POST['weekDay'];
+            $name .=" ";
+            $name .=$_POST['appointmentDate'];
+            $appointment['name']=$name;
             //$task['status']     = $_POST['status'];
             //$task['context']    = $_POST['context'];
             $appointment['clientName'] =$_POST['clientName'];
@@ -52,6 +62,22 @@ switch($trigger)
 }
 ?>
 
+<?php
+try
+{
+    $connection = new Mongo('mongodb://root:root@ds057538.mongolab.com:57538/staff');
+    $database   = $connection->selectDB('staff');
+    $collection = $database->selectCollection('clients');
+}
+catch(MongoConnectionException $e)
+{
+    die("Failed to connect to database ".$e->getMessage());
+}
+ 
+$cursor1 = $collection->find();
+
+?>
+
 <!DOCTYPE html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
@@ -62,14 +88,28 @@ switch($trigger)
     <![endif]-->
 </head>
 <body>
+  <?php include 'common.php';?>
+
+  <?php
+$clientArray=array();
+ while ($cursor1->hasNext()):
+    
+
+    $client = $cursor1->getNext(); 
+    array_push($clientArray, $client['clientName']);
+?>
+<?php endwhile;?>
     <h1>Appointment Creater</h1>
     <?php if ($trigger === 'show_form'): ?>
     <form action="<?php echo $_SERVER['PHP_SELF'];?>" method="post">
          <label for="clientName">Client Name<br /></label>
          <select id="myList" name="clientName" onchange="show()">
-        <option>John Smith    </option>
-        <option>Joe Bloggs    </option>
-       <option>Jane Murphy    </option>
+         <?php
+
+            foreach ($clientArray as $value) {
+            echo'<option value="'.$value.'">'.$value.'</option>'; 
+            }
+            ?>
   </select>
   <p>
   <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css"/>
@@ -106,9 +146,13 @@ switch($trigger)
     </form>
     <?php else: ?>
     <p>
-        Appointment saved. _id: <?php echo $task['_id'];?>.
-        <a href="<?php echo $_SERVER['PHP_SELF'];?>">Add another appointment?</a>
+        Appointment saved.
+        <a href="<?php echo $_SERVER['PHP_SELF'];?>">Add another appointment?</a><br>
+        <a href="index.php">Main Menu</a>
     </p>
 <?php endif;?>
+       
+ 
+</form>
     </body>
 </html>
