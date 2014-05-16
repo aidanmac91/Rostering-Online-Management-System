@@ -9,7 +9,7 @@ catch(MongoConnectionException $e)
 {
     die("Failed to connect to database ".$e->getMessage());
 }
- 
+
 $cursor = $collection->find();
 
 ?>
@@ -27,40 +27,40 @@ $_SESSION['rosterID'] = $rosterID;
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
     <title>Roster Viewer</title>
- 
+
     <link type="text/css" rel="stylesheet" href="" />
     <!--[if lt IE 9]>
         <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
- 
-</head>
-<body>
-    <?php include 'common.php';?>
-<h1>Roster</h1>
- 
-<?php
-$rosterArray=array();
- while ($cursor->hasNext()):
-    
+        <![endif]-->
 
-    $roster = $cursor->getNext(); 
-    array_push($rosterArray, $roster['name']);
-?>
-<?php endwhile;?>
+    </head>
+    <body>
+        <?php include '../common.php';?>
+        <h1>Roster</h1>
+
+        <?php
+        $rosterArray=array();
+        while ($cursor->hasNext()):
 
 
-<form method="get" action="edit_roster.php">
+            $roster = $cursor->getNext(); 
+        array_push($rosterArray, $roster['name']);
+        ?>
+    <?php endwhile;?>
+
+
+    <form method="get" action="../edit/edit_roster.php">
       <label for="rosterID">Client Name</label>
-         <select id="rosterID" name="rosterID" onchange="show()">
-            <?php
+      <select id="rosterID" name="rosterID" onchange="show()">
+        <?php
 
-            foreach ($rosterArray as $value) {
+        foreach ($rosterArray as $value) {
             echo'<option value="'.$value.'">'.$value.'</option>'; 
-            }
-            ?>
-        </select>
+        }
+        ?>
+    </select>
     <input type="submit">
-  </form>
+</form>
 
 
 

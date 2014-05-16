@@ -85,7 +85,7 @@ $cursor = $collection->find($appQuery);
     <![endif]-->
 </head>
 <body>
-    <?php include 'common.php';?>
+    <?php include '../common.php';?>
      <?php while ($cursor->hasNext()):
     $user = $cursor->getNext(); ?>
     <h2><?= $user['name'] ?></h2>
@@ -96,6 +96,7 @@ $cursor = $collection->find($appQuery);
     <strong>Hours Per Week:</strong> <?= $user['hoursPerWeek']?> <br />
 
 <?php endwhile;?>
+ <?php if ($_SESSION['type'] == "Administrator"): ?>
     <h1>Edit Staff Member</h1>
     <?php if ($trigger === 'show_form'): ?>
    
@@ -114,9 +115,11 @@ $cursor = $collection->find($appQuery);
     </form>
     <?php else: ?>
     <p>
-        Task saved. _id: <?php echo $task['_id'];?>.
-        <a href="<?php echo $_SERVER['PHP_SELF'];?>">Add another task?</a>
+        Staff member Edit. 
+        <a href="../view/viewStaffMember.php">Edit another task?</a>
+        <a href="../home.php">Main Menu</a>
     </p>
 <?php endif;?>
+<?php endif; ?>
     </body>
 </html>

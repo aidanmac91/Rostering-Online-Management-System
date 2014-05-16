@@ -1,6 +1,31 @@
+<?php
+
+session_start();
+$messageID = $_SESSION['loggedIn'];
+$pass=" YES";
+// if ($messageID!=$pass) {
+//   header("Location: http://aidanmac91.eu01.aws.af.cm/index.php");
+// }
+if(($messageID)!="YES")
+{
+header("Location: http://aidanmac91.eu01.aws.af.cm/index.php");
+}
+
+// if($_GET['logout']){
+//   fun1();
+// }
+
+// if( isset( $_REQUEST['modify'] )) 
+// { 
+// // insert code here... 
+//   header("Location: http://aidanmac91.eu01.aws.af.cm/home.php");
+
+// } 
+?>
+
 <head>
 
-     <link href="css/bootstrap.min.css" rel="stylesheet">
+     <link href="http://aidanmac91.eu01.aws.af.cm/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
     <link href="jumbotron.css" rel="stylesheet">
@@ -32,14 +57,31 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">Project name</a>
+          <a class="navbar-brand" href="/home.php">Rostering Online Management System</a>
         </div>
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Home</a></li>
+            <li class="active"><a href="/home.php">Home</a></li>
             <li><a href="#about">About</a></li>
             <li><a href="#contact">Contact</a></li>
           </ul>
+          <p class="navbar-text pull-right">
+              <a href="http://aidanmac91.eu01.aws.af.cm/index.php">Logout</a>
+      <?php
+ 
+ ?>
+
+
+<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+<script type="text/javascript">
+$(function(){
+$('#example_tree').find('SPAN').click(function(e){
+    $(this).parent().find('UL').toggle();
+});
+});
+</script>
+             <!--  //<button type="button">Log out</button> -->
+            </p>
         </div><!-- /.nav-collapse -->
       </div><!-- /.container -->
     </div><!-- /.navbar -->
@@ -50,24 +92,42 @@
         </ul></div></div>
 
 <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
-  				<ul class="nav">
-  					<li class="active"><a href="index.php">Home</a></li>
-            Common
-  					<li><a href="create_appointment.php">Create Appointment</a></li>
-  					<li><a href="create_client.php">Create Client</a></li>
-  					<li><a href="create_location.php">Create Location</a></li>
-  					<li><a href="create_roster.php">Create Roster</a></li>
-  					<li><a href="create_staff.php">Create Staff member</a></li>
-  					<!-- <li><a href="get_accomodations.php">Get Accomodations</a></li>
-  					<li><a href="get_appointments.php">Get Appointments</a></li>
-  					<li><a href="get_clients.php">Get Clients</a></li>
-  					<li><a href="get_rosters.php">Get Rosters</a></li>
-  					<li><a href="get_staffMembers.php">Get Staff Members</a></li> -->
-  					<li><a href="viewLocation.php">View Accommodation</a></li>
-  					<li><a href="viewStaffMember.php">View Staff Member</a></li>
-  					<li><a href="viewAppointment.php">View Appointment</a></li>
-  					<li><a href="viewClient.php">View Client</a></li>
-  					<li><a href="viewRoster.php">View Roster</a></li>           
+  				
+          <ul class="nav">
+            <?php if ($_SESSION['type'] != "Administrator"): ?>
+           <li><a href="/create/create_swapMessage.php">Create Swap Message</a></li>
+            <li><a href="/create/create_timeoffMessage.php">Create Time off Message</a></li>
+            <li><a href="/view/viewLocation.php">View Accommodation</a></li>
+            <li><a href="/view/viewSwapMessage.php">View swap message</a></li>
+            <li><a href="/view/viewTimeOffMessage.php">View time off message</a></li>
+            <li><a href="/view/viewStaffMember.php">View Staff Member</a></li>
+            <li><a href="/view/viewAppointment.php">View Appointment</a></li>
+            <li><a href="/view/viewClient.php">View Client</a></li>
+            <li><a href="/view/viewRoster.php">View Roster</a></li> 
+            <li><a href="/view/viewPersonalRoster.php">View Personal Roster</a></li>  
+            <li><a href="/view/viewRosters.php">View Roster by Staff</a></li>   
+
+            <li><a href="/view/viewRosters.php">View Roster </a></li>   
+            <?php endif; ?>
+            <?php if ($_SESSION['type'] == "Administrator"): ?>
+            <li><a href="/create/create_appointment.php">Create Appointment</a></li>
+            <li><a href="/create/create_client.php">Create Client</a></li>
+            <li><a href="/create/create_location.php">Create Location</a></li>
+            <li><a href="/create/create_roster.php">Create Roster</a></li>
+            <li><a href="/create/create_staff.php">Create Staff member</a></li>
+            <li><a href="/view/viewLocation.php">View Accommodation</a></li>
+            <li><a href="/view/viewSwapMessage.php">View swap message</a></li>
+            <li><a href="/view/viewTimeOffMessage.php">View time off message</a></li>
+            <li><a href="/view/viewStaffMember.php">View Staff Member</a></li>
+            <li><a href="/view/viewAppointment.php">View Appointment</a></li>
+            <li><a href="/view/viewClient.php">View Client</a></li>
+            <li><a href="/view/viewRoster.php">View Roster</a></li>   
+            <?php endif; ?>
+  			        
   				</ul>
   			</div>
+          <hr>
+  <footer>
+    <p>&copy; ROMS 2014</p>
+  </footer>
         </body>

@@ -9,7 +9,7 @@ catch(MongoConnectionException $e)
 {
     die("Failed to connect to database ".$e->getMessage());
 }
- 
+
 $cursor = $collection->find();
 
 ?>
@@ -27,39 +27,39 @@ $_SESSION['locationName'] = $locationName;
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
     <title>Accommodation Viewer</title>
- 
+
     <link type="text/css" rel="stylesheet" href="" />
     <!--[if lt IE 9]>
         <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
- 
-</head>
-<body>
-    <?php include 'common.php';?>
-<h1>Accommodations</h1>
- 
-<?php
-$locArray=array();
- while ($cursor->hasNext()):
-    
+        <![endif]-->
 
-    $location = $cursor->getNext(); 
-    array_push($locArray, $location['accomodationName']);
-?>
-<?php endwhile;?>
+    </head>
+    <body>
+        <?php include '../common.php';?>
+        <h1>Accommodations</h1>
 
-<form method="get" action="edit_location.php">
+        <?php
+        $locArray=array();
+        while ($cursor->hasNext()):
+
+
+            $location = $cursor->getNext(); 
+        array_push($locArray, $location['accomodationName']);
+        ?>
+    <?php endwhile;?>
+
+    <form method="get" action="../edit/edit_location.php">
       <label for="locationName">Accommodation</label>
-         <select id="locationName" name="locationName" onchange="show()">
-            <?php
+      <select id="locationName" name="locationName" onchange="show()">
+        <?php
 
-            foreach ($locArray as $value) {
+        foreach ($locArray as $value) {
             echo'<option value="'.$value.'">'.$value.'</option>'; 
-            }
-            ?>
-        </select>
+        }
+        ?>
+    </select>
     <input type="submit">
-  </form>
+</form>
 
 
 

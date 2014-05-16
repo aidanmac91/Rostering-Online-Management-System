@@ -1,4 +1,7 @@
 <?php
+ session_start();
+
+ //$_SESSION['loggedIn'] = "NO";
 $succss = "";
 if(isset($_POST) and $_POST['submitForm'] == "Login" ){
 
@@ -13,18 +16,25 @@ if(isset($_POST) and $_POST['submitForm'] == "Login" ){
 		$error[] = "Enter your password";	
 	}
 	if(count($error) == 0){
-		$con = new Mongo();
+		$con = new Mongo('mongodb://root:root@ds057538.mongolab.com:57538/staff');
 		if($con){
 			// Select Database
-			$db = $con->test;
+			$db = $con->selectDB('staff');
 			// Select Collection
-			$people = $db->people;
-			$qry = array("user" => $usr_email,"password" => md5($usr_password));
+			$people = $db->selectCollection('users');
+			$qry = array("email" => $usr_email,"recordPassword" => sha1($usr_password));
 			$result = $people->findOne($qry);
 			if($result){
 			    $success = "You are successully loggedIn";
-			    // Rest of code up to you....	
-			}			
+			     session_start();
+			     //$_SESSION['type'] = $result['staffType'];
+				//$_SESSION['username'] = $result['name'];
+				$_SESSION['authorised'] = "YES";
+			    header("Location: http://aidanmac91.eu01.aws.af.cm/home.php");
+			}		
+			else{
+				$error[] = "Password/Email combo was incorrect";
+			}	
 		} else {
 			die("Mongo DB not installed");
 		}	
@@ -34,7 +44,7 @@ if(isset($_POST) and $_POST['submitForm'] == "Login" ){
 <!DOCTYPE html>
 <html>
 <head>
-<title>Sample Mongo Login</title>
+<title>Rostering Online Management System Login</title>
 <meta charset="utf-8">
 <link href="css/bootstrap.css" rel="stylesheet"></link>
 <style type="text/css">
@@ -75,6 +85,7 @@ if(isset($_POST) and $_POST['submitForm'] == "Login" ){
 <script src="js/jquery.min.js"></script>
 </head>
 <body>
+	<?php include 'common.php';?>
 <?php
 	if(isset($error) and count($error) > 0){
 ?>
@@ -89,8 +100,8 @@ if(isset($_POST) and $_POST['submitForm'] == "Login" ){
 	}
 ?>
 <div class="container">
-      <form id="loginForm" class="form-signin" action="index.php" method="POST">
-        <h2 class="form-signin-heading">Mongo Login</h2>
+      <form id="loginForm" class="form-signin" method="POST">
+        <h2 class="form-signin-heading">ROMS Login</h2>
 	<div class="control-group">
 	  <div class="controls">
 	    <input type="text" id="usr_email" name="usr_email" class="input-block-level" placeholder="Email address" />
@@ -103,7 +114,6 @@ if(isset($_POST) and $_POST['submitForm'] == "Login" ){
 	</div>
         <input class="btn btn-large btn-primary" name="submitForm" id="submitForm" type="submit" value="Login" />
 <br/>
-<a href='http://9lessons.info'>9lessons.info</a>
       </form>
 </div>
 </body>

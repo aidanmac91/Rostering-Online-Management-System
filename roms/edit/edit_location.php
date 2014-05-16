@@ -32,9 +32,6 @@ switch($trigger)
             $collection = $database->selectCollection('accommodations');
  
             $accommodation               = array();
-            //$task['title']      = $_POST['title'];
-            //$task['status']     = $_POST['status'];
-            //$task['context']    = $_POST['context'];
             $accommodation['accomodationName'] =$_POST['accomodationName'];
             $accommodation['accommodationAddress']=$_POST['accommodationAddress'];
             $accommodation['phoneNumber']=$_POST['phoneNumber'];
@@ -42,13 +39,6 @@ switch($trigger)
             $accommodation['numberOfClients']=$_POST['numberOfClient'];
             // $accommodation['otherInfo']=$_POST['otherInfo'];
             $accommodation['saved_date']   = new MongoDate();
- 
-            //$collection->insert($task); 
-
-            //echo $_POST['accomodationName']; 
-            //echo $accommodation['accomodationName'];       
-
-              //$latLong = array($lat,$lon);
 
                 $newdata = array('$set' => array('accomodationName' => $_POST['accomodationName'],'accommodationAddress'=>$_POST['accommodationAddress'],
                     'phoneNumber'=>$_POST['phoneNumber'],'attended'=>true,'numberOfClients'=>$_POST['numberOfClient']));
@@ -101,12 +91,13 @@ $cursor = $collection->find($appQuery);
     <![endif]-->
 </head>
 <body>
-    <?php include 'common.php';?>
+    <?php include '../common.php';?>
      <?php while ($cursor->hasNext()):
     $accommodation = $cursor->getNext(); ?>
     <h2><?= $accommodation['accomodationName'] ?></h2>
     <strong>accommodationAddress:</strong> <?= $accommodation['accommodationAddress']?> <br />
 <?php endwhile;?>
+ <?php if ($_SESSION['type'] == "Administrator"): ?>
     <h1>accommodation Creator</h1>
     <?php if ($trigger === 'show_form'): ?>
    
@@ -124,9 +115,11 @@ $cursor = $collection->find($appQuery);
     </form>
     <?php else: ?>
     <p>
-        Task saved. _id: <?php echo $task['_id'];?>.
-        <a href="<?php echo $_SERVER['PHP_SELF'];?>">Add another task?</a>
+        Accommodation edit.
+        <a href="../view/viewLocation.php">Edit another accommodation?</a>
+        <a href="../home.php">Add another task?</a>
     </p>
 <?php endif;?>
+<?php endif; ?>
     </body>
 </html>

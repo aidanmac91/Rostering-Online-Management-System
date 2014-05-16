@@ -31,31 +31,18 @@ switch($trigger)
             $collection = $database->selectCollection('rosters');
  
             $roster               = array();
-            //$task['title']      = $_POST['title'];
-            $name=$_POST['staffMember'];//+" "+$_POST['weekDay'];
+            $name=$_POST['staffMember'];
             $name .=" ";
             $name .=$_POST['weekDay'];
             $roster['name']= $name;
-            //$task['status']     = $_POST['status'];
-            //$task['context']    = $_POST['context'];
             $roster['weekDay'] =$_POST['weekDay'];
             $roster['location']=$_POST['location'];
             $roster['timeslot']=$_POST['timeslot'];
-            // $accommodation['attended']=false;
             $roster['staffMember']=$_POST['staffMember'];
-            // $accommodation['otherInfo']=$_POST['otherInfo'];
             $roster['saved_date']   = new MongoDate();
-
-            //$collection->insert($task); 
-
-            //echo $_POST['accomodationName']; 
-            //echo $accommodation['accomodationName'];       
-
-              //$latLong = array($lat,$lon);
 
                 $newdata = array('$set' => array('name' => $name,'weekDay'=>$_POST['weekDay'],
                     'location'=>$_POST['location'],'timeslot'=>$_POST['timeslot'],'staffMember'=>$_POST['staffMember']));
-                print_r($newdata);
 
                  $collection->update(array('staffMember' => $_POST['staffMember']), $newdata); 
         } 
@@ -104,7 +91,7 @@ $cursor = $collection->find($appQuery);
     <![endif]-->
 </head>
 <body>
-    <?php include 'common.php';?>
+    <?php include '../common.php';?>
      <?php while ($cursor->hasNext()):
     $roster = $cursor->getNext(); ?>
     <h2><?= $roster['name'] ?></h2>
@@ -113,6 +100,7 @@ $cursor = $collection->find($appQuery);
     <strong>Location:</strong> <?= $roster['location']?> <br />
     <strong>Time slot:</strong> <?= $roster['timeslot']?> <br />
 <?php endwhile;?>
+ <?php if ($_SESSION['type'] == "Administrator"): ?>
     <h1>Roster Edit</h1>
     <?php if ($trigger === 'show_form'): ?>
    
@@ -130,9 +118,11 @@ $cursor = $collection->find($appQuery);
     </form>
     <?php else: ?>
     <p>
-        Task saved. _id: <?php echo $task['_id'];?>.
-        <a href="<?php echo $_SERVER['PHP_SELF'];?>">Add another task?</a>
+        roster saved.
+        <a href="../view/viewRoster.php">Edit another roster?</a>
+        <a href="../home.php">Main Menu</a>
     </p>
 <?php endif;?>
+<?php endif; ?>
     </body>
 </html>

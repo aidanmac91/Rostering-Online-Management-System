@@ -9,7 +9,7 @@ catch(MongoConnectionException $e)
 {
     die("Failed to connect to database ".$e->getMessage());
 }
- 
+
 $cursor = $collection->find();
 
 ?>
@@ -27,40 +27,40 @@ $_SESSION['appointmentID'] = $appointmentID;
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
     <title>Appointment Viewer</title>
- 
+
     <link type="text/css" rel="stylesheet" href="" />
     <!--[if lt IE 9]>
         <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
- 
-</head>
-<body>
-    <?php include 'common.php';?>
-<h1>Appointment</h1>
- 
-<?php
-$appointArray=array();
- while ($cursor->hasNext()):
-    
+        <![endif]-->
 
-    $appoint = $cursor->getNext(); 
-    array_push($appointArray, $appoint['name']);
-?>
-<?php endwhile;?>
+    </head>
+    <body>
+        <?php include '../common.php';?>
+        <h1>Appointment</h1>
+
+        <?php
+        $appointArray=array();
+        while ($cursor->hasNext()):
 
 
-<form method="get" action="edit_appointment.php">
+            $appoint = $cursor->getNext(); 
+        array_push($appointArray, $appoint['name']);
+        ?>
+    <?php endwhile;?>
+
+
+    <form method="get" action="../edit/edit_appointment.php">
       <label for="appointmentID">Accommodation</label>
-         <select id="appointmentID" name="appointmentID" onchange="show()">
-            <?php
+      <select id="appointmentID" name="appointmentID" onchange="show()">
+        <?php
 
-            foreach ($appointArray as $value) {
+        foreach ($appointArray as $value) {
             echo'<option value="'.$value.'">'.$value.'</option>'; 
-            }
-            ?>
-        </select>
+        }
+        ?>
+    </select>
     <input type="submit">
-  </form>
+</form>
 
 
 
