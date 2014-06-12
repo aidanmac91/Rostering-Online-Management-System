@@ -1,16 +1,22 @@
+<!--
+  File Name: viewRosters.php
+  Created by: Aidan McCarthy
+  Project: Rostering Online Management System
+  The webpage for viewing different rosters
+-->
 <?php
 try
 {
-    $connection = new Mongo('mongodb://root:root@ds057538.mongolab.com:57538/staff');
-    $database   = $connection->selectDB('staff');
-    $collection = $database->selectCollection('users');
+    $connection = new Mongo('mongodb://root:root@ds057538.mongolab.com:57538/staff');//establish
+    $database   = $connection->selectDB('staff');//database
+    $collection = $database->selectCollection('users');//collection
 }
 catch(MongoConnectionException $e)
 {
     die("Failed to connect to database ".$e->getMessage());
 }
 
-$cursor = $collection->find();
+$cursor = $collection->find();//get all documents
 
 ?>
 
@@ -26,15 +32,15 @@ catch(MongoConnectionException $e)
     die("Failed to connect to database ".$e->getMessage());
 }
 
-$cursor1 = $collection->find();
+$cursor1 = $collection->find();//get all documents
 
 ?>
 
 <?php
 
-session_start();
+session_start();//start session
 
-$_SESSION['rosterStaffID'] = $rosterStaffID;
+$_SESSION['rosterStaffID'] = $rosterStaffID;//set session variable
 
 ?>
 
@@ -51,24 +57,22 @@ $_SESSION['rosterStaffID'] = $rosterStaffID;
 
     </head>
     <body>
-        <?php include '../common.php';?>
+        <?php include '../common.php';?><!-- include common.php-->
         <h1>Roster</h1>
 
        <?php
             $staffArray=array();
             while ($cursor->hasNext()):
-
-
+              //loop through cursor and populate staffArray with names of staff
               $staff = $cursor->getNext(); 
             array_push($staffArray, $staff['name']);
             ?>
           <?php endwhile;?>
 
-          <form method="get" action="viewRosterByStaffMember.php">
+          <form method="get" action="viewRosterByStaffMember.php"><!-- Form for view by staff member-->
             <label for="rosterStaffID">Staff Member</label>
-            <select id="rosterStaffID" name="rosterStaffID" onchange="show()">
+            <select id="rosterStaffID" name="rosterStaffID" onchange="show()"><!-- Dropdown list of users-->
               <?php
-
               foreach ($staffArray as $value) {
                 echo'<option value="'.$value.'">'.$value.'</option>'; 
               }
@@ -80,18 +84,16 @@ $_SESSION['rosterStaffID'] = $rosterStaffID;
            <?php
             $loc=array();
             while ($cursor1->hasNext()):
-
-
+              //loop through cursor1 and populate loc with names of accommodations
               $staff = $cursor1->getNext(); 
             array_push($loc, $staff['accomodationName']);
             ?>
           <?php endwhile;?>
 
-          <form method="get" action="viewRosterByLocation.php">
+          <form method="get" action="viewRosterByLocation.php"><!-- Form for view by staff member-->
             <label for="rosterLocationID">Location</label>
-            <select id="rosterLocationID" name="rosterLocationID" onchange="show()">
+            <select id="rosterLocationID" name="rosterLocationID" onchange="show()"><!-- Dropdown list of users-->
               <?php
-
               foreach ($loc as $value) {
                 echo'<option value="'.$value.'">'.$value.'</option>'; 
               }
@@ -100,9 +102,9 @@ $_SESSION['rosterStaffID'] = $rosterStaffID;
             <input type="submit">
           </form>
 
+          <!--Form for date.  Pulls in the date picker widget -->
           <form method="get" action="viewRosterByDate.php">
-            <label for="rosterLocationID">Date</label>
-             <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css"/>
+          <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css"/>
           <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
           <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
           <link rel="stylesheet" href="/resources/demos/style.css"/>

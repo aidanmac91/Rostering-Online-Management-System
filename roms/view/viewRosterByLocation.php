@@ -1,84 +1,31 @@
+<!--
+  File Name: viewRosterByLocation.php
+  Created by: Aidan McCarthy
+  Project: Rostering Online Management System
+  The webpage for viewing rosters for a certain accommodation
+-->
 <?php
 
-session_start();
+session_start();//start session
 
-$rosterLocationID = $_GET['rosterLocationID'];
-
-
+$rosterLocationID = $_GET['rosterLocationID'];//get session variable
 ?>
-<?php
-$trigger = "";
 
-
- 
-if((!empty($_POST['submit'])) && ($_POST['submit'] === 'Save')) 
-{
-    $trigger = "do_save";
-}
-else
-{
-    $trigger = "show_form";
-}
- 
-switch($trigger) 
-{
-    case 'do_save':
- 
-        try
-        {
-            $connection = new Mongo('mongodb://root:root@ds057538.mongolab.com:57538/staff');
-            $database   = $connection->selectDB('staff');
-            $collection = $database->selectCollection('rosters');
- 
-            $roster               = array();
-            $name=$_POST['staffMember'];
-            $name .=" ";
-            $name .=$_POST['weekDay'];
-            $roster['name']= $name;
-            $roster['weekDay'] =$_POST['weekDay'];
-            $roster['location']=$_POST['location'];
-            $roster['timeslot']=$_POST['timeslot'];
-            $roster['staffMember']=$_POST['staffMember'];
-            $roster['saved_date']   = new MongoDate();
-
-                $newdata = array('$set' => array('name' => $name,'weekDay'=>$_POST['weekDay'],
-                    'location'=>$_POST['location'],'timeslot'=>$_POST['timeslot'],'staffMember'=>$_POST['staffMember']));
-
-                 $collection->update(array('staffMember' => $_POST['staffMember']), $newdata); 
-        } 
-        catch(MongoConnectionException $e) 
-        {
- 
-            die("Failed to connect to database ".$e->getMessage());
-        }
- 
-        catch(MongoException $e) 
-        {
- 
-            $die('Failed to insert data '.$e->getMessage());
-        }
-        break;
- 
-    case 'show_form':
-    default:
-}
-?>
 <?php
 try
 {
-    $connection = new Mongo('mongodb://root:root@ds057538.mongolab.com:57538/staff');
-    $database   = $connection->selectDB('staff');
-    $collection = $database->selectCollection('rosters');
+    $connection = new Mongo('mongodb://root:root@ds057538.mongolab.com:57538/staff');//establish
+    $database   = $connection->selectDB('staff');//database
+    $collection = $database->selectCollection('rosters');//collection
 }
 catch(MongoConnectionException $e)
 {
     die("Failed to connect to database ".$e->getMessage());
 }
  
-$cursor = $collection->find();
-$appQuery = array('location' => $rosterLocationID);
+$appQuery = array('location' => $rosterLocationID);//query to be compared
 
-$cursor = $collection->find($appQuery);
+$cursor = $collection->find($appQuery);//result of the query
 ?>
 
 <!DOCTYPE html>
@@ -87,13 +34,10 @@ $cursor = $collection->find($appQuery);
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
     <title> <?$rosterStaffID?>'s Rosters </title>
     <link type="text/css" rel="stylesheet" href="" />
-    <!--[if lt IE 9]>
-        <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
 </head>
 <body>
-    <?php include '../common.php';?>
-     <?php while ($cursor->hasNext()):
+    <?php include '../common.php';?><!-- include common.php-->
+     <?php while ($cursor->hasNext())://loop through cursor and display information back to the user
     $roster = $cursor->getNext(); ?>
     <h2><?= $roster['name'] ?></h2>
     <strong>Date:</strong> <?= $roster['weekDay']?> <br />

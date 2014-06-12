@@ -1,9 +1,11 @@
+
+<!--
+  File Name: create_timeoffMessage.php
+  Created by: Aidan McCarthy
+  Project: Rostering Online Management System
+  The webpage for creating a swap message
+-->
 <?php
-
-session_start();
-
-$_SESSION['regName'] = $regValue;
-
 
 $trigger = "";
 
@@ -21,24 +23,24 @@ switch($trigger)
   case 'do_save':
 
   try
+  //save time off message
   {
-    $connection = new Mongo('mongodb://root:root@ds057538.mongolab.com:57538/staff');
-    $database   = $connection->selectDB('staff');
-    $collection = $database->selectCollection('timeoffMessages');
+    $connection = new Mongo('mongodb://root:root@ds057538.mongolab.com:57538/staff');//establish
+    $database   = $connection->selectDB('staff');//which database
+    $collection = $database->selectCollection('timeoffMessages');//which collection
 
-    $message               = array();
-    $name=$_POST['staffName'];//+" "+$_POST['weekDay'];
+    $message               = array();//message array
+    $name=$_POST['staffName'];
     $name .=" time off  ";
     $name .=$_POST['date'];
-    $message['name']=$name;
-    $message['from'] =$_POST['staffName'];
-    $message['reason'] =$_POST['reason'];
-    $message['duration'] =$_POST['duration'];
-    $message['otherInfo'] =$_POST['otherInfo'];
-    $message['date'] =$_POST['date'];
-    $message['seen'] =false;
-    $message['approved'] =false;
-    $appointment['saved_date']   = new MongoDate();
+    $message['name']=$name;//sets concatinated string to name 
+    $message['from'] =$_POST['staffName'];//set from to value in $_POST['staffName']
+    $message['reason'] =$_POST['reason'];//set reason to value in $_POST['reason']
+    $message['duration'] =$_POST['duration'];//set duration to value in $_POST['duration']
+    $message['otherInfo'] =$_POST['otherInfo'];//set otherInfo to value in $_POST['otherInfo']
+    $message['date'] =$_POST['date'];//set date to value in $_POST['date']
+    $message['seen'] =false;//set seen to false
+    $message['approved'] =false;//set approved to false
 
     $collection->insert($message);       
   } 
@@ -62,32 +64,34 @@ switch($trigger)
 
 <?php
 try
+      //retrieves information from database
 {
-  $connection = new Mongo('mongodb://root:root@ds057538.mongolab.com:57538/staff');
-  $database   = $connection->selectDB('staff');
-  $collection = $database->selectCollection('rosters');
+  $connection = new Mongo('mongodb://root:root@ds057538.mongolab.com:57538/staff');//establish
+  $database   = $connection->selectDB('staff');//which database
+  $collection = $database->selectCollection('rosters');//which collection
 }
 catch(MongoConnectionException $e)
 {
   die("Failed to connect to database ".$e->getMessage());
 }
 
-$cursor = $collection->find();
+$cursor = $collection->find();//saves all documents into the cursor object
 
 ?>
 <?php
 try
+      //retrieves information from database
 {
-  $connection = new Mongo('mongodb://root:root@ds057538.mongolab.com:57538/staff');
-  $database   = $connection->selectDB('staff');
-  $collection = $database->selectCollection('users');
+  $connection = new Mongo('mongodb://root:root@ds057538.mongolab.com:57538/staff');//establish
+  $database   = $connection->selectDB('staff');//which database
+  $collection = $database->selectCollection('users');//which collection
 }
 catch(MongoConnectionException $e)
 {
   die("Failed to connect to database ".$e->getMessage());
 }
 
-$cursor1 = $collection->find();
+$cursor1 = $collection->find();//saves all documents into the cursor1 object
 
 ?>
 
@@ -98,33 +102,29 @@ $cursor1 = $collection->find();
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
   <title>Add a message</title>
   <link type="text/css" rel="stylesheet" href="" />
-    <!--[if lt IE 9]>
-        <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-        <![endif]-->
       </head>
       <body>
-        <?php include '../common.php';?>
+        <?php include '../common.php';?><!--Include common.php-->
 
         <?php
+         //loops through cursor and save the name of the object into the rosterArray
         $rosterArray=array();
         while ($cursor->hasNext()):
-
-
           $roster = $cursor->getNext(); 
         array_push($rosterArray, $roster['name']);
         ?>
       <?php endwhile;?>
 
       <?php
+       //loops through cursor1 and save the name of the object into the staffArray
       $staffArray=array();
       while ($cursor1->hasNext()):
-
-
         $staff = $cursor1->getNext(); 
       array_push($staffArray, $staff['name']);
       ?>
     <?php endwhile;?>
     <p>
+      <!-- DATE PICKER -->
       <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css"/>
       <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
       <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
@@ -140,7 +140,7 @@ $cursor1 = $collection->find();
     <form action="<?php echo $_SERVER['PHP_SELF'];?>" method="post">
      <p>
       <label for="reason">Reason<br /></label>
-      <select id="myList" name="reason" onchange="show()">
+      <select id="myList" name="reason" onchange="show()"><!-- Dropdown list of reason-->
         <option>Medical</option>
         <option>Personal</option>
         <option>Other</option>
@@ -148,7 +148,7 @@ $cursor1 = $collection->find();
     </p>
     <p>
       <label for="duration">Duration<br /></label>
-      <select id="myList" name="duration" onchange="show()">
+      <select id="myList" name="duration" onchange="show()"><!-- Dropdown list of duration-->
         <option>6 hours</option>
         <option>11 hours</option>
       </select>
@@ -156,22 +156,23 @@ $cursor1 = $collection->find();
     <p>
       <label for="otherInfo">Other Information <br /></label>
       <textarea id="otherInfo" name="otherInfo"/>
-    </textarea>
+    </textarea><!-- text area for other information-->
     <br>
   </select>
   <label for="staffName">Staff Member</label>
-  <select id="staffName" name="staffName" onchange="show()">
+  <select id="staffName" name="staffName" onchange="show()"><!-- Dropdown list of staffName-->
     <?php
 
-    foreach ($staffArray as $value) {
-      echo'<option value="'.$value.'">'.$value.'</option>'; 
+    foreach ($staffArray as $value) 
+    {
+      echo'<option value="'.$value.'">'.$value.'</option>'; //loops through array and creates an option for each object
     }
     ?>
   </select>
   <br>
   <p>
     <label for="date">Date<br></label>
-    <input id="datepicker" name="date"/>
+    <input id="datepicker" name="date"/><!--DISPLAYS DATE PICKER -->
   </p>
   <p><input type="submit" name="submit" value="Save"/></p>
 </form>
@@ -185,5 +186,7 @@ $cursor1 = $collection->find();
 
 
 </form>
+
+ <?php include '../footer.php';?>
 </body>
 </html>

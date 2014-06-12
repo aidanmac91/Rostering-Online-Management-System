@@ -62,8 +62,8 @@ header("Location: http://aidanmac91.eu01.aws.af.cm/index.php");
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
             <li class="active"><a href="/home.php">Home</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#contact">Contact</a></li>
+            <li><a href="/about.php">About</a></li>
+            <li><a href="/contact.php">Contact</a></li>
           </ul>
           <p class="navbar-text pull-right">
               <a href="http://aidanmac91.eu01.aws.af.cm/index.php">Logout</a>
@@ -92,7 +92,7 @@ $('#example_tree').find('SPAN').click(function(e){
         </ul></div></div>
 
 <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
-  				
+          
           <ul class="nav">
             <?php if ($_SESSION['type'] != "Administrator"): ?>
            <li><a href="/create/create_swapMessage.php">Create Swap Message</a></li>
@@ -105,9 +105,7 @@ $('#example_tree').find('SPAN').click(function(e){
             <li><a href="/view/viewClient.php">View Client</a></li>
             <li><a href="/view/viewRoster.php">View Roster</a></li> 
             <li><a href="/view/viewPersonalRoster.php">View Personal Roster</a></li>  
-            <li><a href="/view/viewRosters.php">View Roster by Staff</a></li>   
-
-            <li><a href="/view/viewRosters.php">View Roster </a></li>   
+            <li><a href="/view/viewRosters.php">View Rosters</a></li>
             <?php endif; ?>
             <?php if ($_SESSION['type'] == "Administrator"): ?>
             <li><a href="/create/create_appointment.php">Create Appointment</a></li>
@@ -123,11 +121,8 @@ $('#example_tree').find('SPAN').click(function(e){
             <li><a href="/view/viewClient.php">View Client</a></li>
             <li><a href="/view/viewRoster.php">View Roster</a></li>   
             <?php endif; ?>
-  			        
-  				</ul>
-  			</div>
+                
+          </ul>
+        </div>
           <hr>
-  <footer>
-    <p>&copy; ROMS 2014</p>
-  </footer>
         </body>

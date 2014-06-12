@@ -1,24 +1,30 @@
+<!--
+  File Name: viewLocation.php
+  Created by: Aidan McCarthy
+  Project: Rostering Online Management System
+  The webpage for viewing an location
+-->
 <?php
 try
 {
-    $connection = new Mongo('mongodb://root:root@ds057538.mongolab.com:57538/staff');
-    $database   = $connection->selectDB('staff');
-    $collection = $database->selectCollection('accommodations');
+    $connection = new Mongo('mongodb://root:root@ds057538.mongolab.com:57538/staff');//establish
+    $database   = $connection->selectDB('staff');//database
+    $collection = $database->selectCollection('accommodations');//collection
 }
 catch(MongoConnectionException $e)
 {
     die("Failed to connect to database ".$e->getMessage());
 }
 
-$cursor = $collection->find();
+$cursor = $collection->find();//saves all documents into the cursor object
 
 ?>
 
 <?php
 
-session_start();
+session_start();//start session
 
-$_SESSION['locationName'] = $locationName;
+$_SESSION['locationName'] = $locationName;//set session variable
 
 ?>
 
@@ -35,24 +41,22 @@ $_SESSION['locationName'] = $locationName;
 
     </head>
     <body>
-        <?php include '../common.php';?>
+        <?php include '../common.php';?><!-- Include common.php-->
         <h1>Accommodations</h1>
 
         <?php
         $locArray=array();
         while ($cursor->hasNext()):
-
-
+               //loop through cursor and populate array with accommodation's name
             $location = $cursor->getNext(); 
         array_push($locArray, $location['accomodationName']);
         ?>
     <?php endwhile;?>
 
-    <form method="get" action="../edit/edit_location.php">
+    <form method="get" action="../edit/edit_location.php"><!-- Form-->
       <label for="locationName">Accommodation</label>
-      <select id="locationName" name="locationName" onchange="show()">
+      <select id="locationName" name="locationName" onchange="show()"><!-- Dropdown list of accommodations-->
         <?php
-
         foreach ($locArray as $value) {
             echo'<option value="'.$value.'">'.$value.'</option>'; 
         }

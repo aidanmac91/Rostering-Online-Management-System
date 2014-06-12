@@ -1,3 +1,9 @@
+<!--
+  File Name: create_location.php
+  Created by: Aidan McCarthy
+  Project: Rostering Online Management System
+  The webpage for creating an accommodation
+-->
 <?php
 $trigger = "";
 
@@ -15,27 +21,26 @@ switch($trigger)
     case 'do_save':
     
     try
+    //saves accommodation
     {
-        $connection = new Mongo('mongodb://root:root@ds057538.mongolab.com:57538/staff');
-        $database   = $connection->selectDB('staff');
-        $collection = $database->selectCollection('accommodations');
-        
-        $accommodation              = array();
-        $accommodation['accomodationName'] =$_POST['accomodationName'];
-        $accommodation['accommodationAddress']=$_POST['accommodationAddress'];
-        $accommodation['phoneNumber']=$_POST['phoneNumber'];
-        $accommodation['numberOfClients']=$_POST['numberOfClients'];
-        $accommodation['saved_date']   = new MongoDate();
-        
-        $collection->insert($accommodation);       
+        $connection = new Mongo('mongodb://root:root@ds057538.mongolab.com:57538/staff');//establish
+        $database   = $connection->selectDB('staff');//which datbase
+        $collection = $database->selectCollection('accommodations');//which collection
+    
+        $accommodation              = array();//accommodation array
+        $accommodation['accomodationName'] =$_POST['accomodationName'];//set accomodationName to value in $_POST['accomodationName']
+        $accommodation['accommodationAddress']=$_POST['accommodationAddress'];//set accommodationAddress to value in $_POST['accommodationAddress']
+        $accommodation['phoneNumber']=$_POST['phoneNumber'];//set phoneNumber to value in $_POST['phoneNumber']
+        $accommodation['numberOfClients']=$_POST['numberOfClients'];//set numberOfClients to value in $_POST['numberOfClients']
+        $collection->insert($accommodation);     //inserts accommodation array  
     } 
-    catch(MongoConnectionException $e) 
+    catch(MongoConnectionException $e) //connection exception
     {
        
         die("Failed to connect to database ".$e->getMessage());
     }
     
-    catch(MongoException $e) 
+    catch(MongoException $e) //exception
     {
        
         $die('Failed to insert data '.$e->getMessage());
@@ -52,12 +57,9 @@ switch($trigger)
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
     <title>Add a accommodation</title>
     <link type="text/css" rel="stylesheet" href="" />
-    <!--[if lt IE 9]>
-        <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-        <![endif]-->
     </head>
     <body>
-        <?php include '../common.php';?>
+        <?php include '../common.php';?><!--include common.php -->
         <h1>accommodation Creater</h1>
         <?php if ($trigger === 'show_form'): ?>
         <!-- Form for creating a location -->
@@ -70,6 +72,7 @@ switch($trigger)
         <!-- input for accomodation address -->
         <p>
             <label for="accommodationAddress">Address<br /> </label>
+            <br>
             <textArea id="accommodationAddress" name="accommodationAddress"></textArea>
         </p>
         <!-- input for accomodation phone number -->
@@ -100,5 +103,7 @@ switch($trigger)
         <a href="../home.php">Main Menu</a>
     </p>
 <?php endif;?>
+
+ <?php include '../footer.php';?>
 </body>
 </html>

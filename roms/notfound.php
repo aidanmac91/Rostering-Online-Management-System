@@ -1,9 +1,15 @@
+<!--
+  File Name: notfound.php
+  Created by: Aidan McCarthy
+  Project: Rostering Online Management System
+  The custom 404 page
+-->
 <html>
 <head>
 	<title></title>
 </head>
 <body>
-	<?php include 'common.php';?>
+	<?php include 'common.php';?><!--include common.php-->
 <div class="container">
   <div class="row">
     <div class="span2">
@@ -13,8 +19,6 @@
           <p>The page you requested could not be found, either contact your webmaster or try again. Use your browsers <b>Back</b> button to navigate to the page you have prevously come from</p>
         </div>
         <br />
-     
-        <!-- By ConnerT HTML & CSS Enthusiast -->  
     </div>
   </div>
 </div>
